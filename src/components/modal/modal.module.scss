@@ -1,0 +1,44 @@
+.modalBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  transition: all 0.3s ease-in-out;
+  &__closed {
+    top: -100%;
+  }
+}
+
+.innerModal {
+  position: fixed;
+  width: 100%;
+  padding: 60px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+  & > div:first-child {
+    width: 120px;
+    flex: 1;
+  }
+  & > button {
+    border-radius: 36px;
+    border: 4px solid #fff;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(20px);
+    height: 120px;
+    width: 100%;
+    color: #fffdfb;
+    font-size: 40px;
+    font-weight: 700;
+  }
+  &__closed {
+    // display: none;
+    top: -100%;
+  }
+}

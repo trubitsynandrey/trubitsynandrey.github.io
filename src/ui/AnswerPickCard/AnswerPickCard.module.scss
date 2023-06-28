@@ -1,0 +1,63 @@
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  border: 4px solid #FFFDFB;
+  position: relative;
+  border-radius: 36px;
+  height: 160px;
+  color: #FFFDFB;
+  font-size: 40px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  & > svg {
+    margin-left: 40px;
+  }
+  & > div:first-of-type {
+    margin-left: 24px;
+  }
+  &__wrong {
+    background-color: #DB3624;
+    & > div:first-of-type {
+      & > p {
+        font-size: 24px;
+        font-weight: 400;
+        text-align: left;
+      }
+      & > p:first-of-type {
+        font-weight: 700;
+      }
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+}
+
+.circle {
+  @include flex-center();
+  position: absolute;
+  font-size: 32px;
+  width: 52px;
+  height: 52px;
+  border: 4px solid #FFFDFB;
+  background-color: #00D1D2;
+  border-radius: 999px;
+  top: -5px;
+  left: -4px;
+  &__wrong {
+    background-color: #DB3624;
+  }
+  &__none {
+    display: none;
+  }
+}
+
+.wrongSubText {
+  font-size: 10px !important;
+}
