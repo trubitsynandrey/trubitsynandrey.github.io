@@ -6,6 +6,7 @@
   }
   & > div:first-child {
     position: absolute;
+    width: 100%;
   }
   & > div {
     transition: opacity 1s ease-in-out;
