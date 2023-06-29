@@ -9,10 +9,17 @@
   &__wrong {
     background-color: #34303d;
   }
+
+  & > div:first-child {
+    max-width: 624px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
 }
 
 .answersWrapper {
-  margin-top: 110px;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -24,6 +31,7 @@
   background: #fffdfb;
   text-align: center;
   padding-bottom: 34px;
+  margin-bottom: 24px;
   & > div {
     height: 60px;
     background-color: #00d1d2;

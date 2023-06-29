@@ -1,4 +1,4 @@
-import { createElement, useState } from 'react'
+import { createElement, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import imgUrl from '../../assets/adult.png'
@@ -36,9 +36,15 @@ export const Quiz = () => {
     setIsRightTheme(true)
   }
 
+  const caption = useRef<HTMLDivElement | null>(null)
+
   const isFinal = currentQuestion.id === '5'
 
   const [animate, setAnimate] = useState(false)
+
+  const scrollToTop = () => {
+    caption.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
 
   const handleClick = () => {
     setAnimate(true)
@@ -55,6 +61,7 @@ export const Quiz = () => {
     }
 
     handleClick()
+    scrollToTop()
   }
 
   const isWrongContentShow = isWrongTheme && !isRightTheme
@@ -67,12 +74,14 @@ export const Quiz = () => {
         animate && styles.fadeIn,
       )}
     >
-      <div className={styles.sliderCaption}>
-        <div
-          className={classNames(isWrongContentShow && styles.caption__wrong)}
-        >
-          {Array.from({ length: quizData.length }, (_, i) => String(i + 1)).map(
-            (item, idx) => (
+      <div>
+        <div className={styles.sliderCaption} ref={caption}>
+          <div
+            className={classNames(isWrongContentShow && styles.caption__wrong)}
+          >
+            {Array.from({ length: quizData.length }, (_, i) =>
+              String(i + 1),
+            ).map((item, idx) => (
               <div
                 key={idx}
                 className={classNames(
@@ -80,75 +89,77 @@ export const Quiz = () => {
                   currentQuestion.id === item && styles.circlePoint__active,
                 )}
               ></div>
-            ),
+            ))}
+          </div>
+          {!isRightTheme ? (
+            <>
+              <p
+                className={classNames(
+                  styles.notPickedFirst,
+                  isWrongTheme && styles.notPickedFirst__wrong,
+                )}
+              >
+                Выберите верный ответ
+              </p>
+              <p className={styles.notPickedSecond}>
+                {currentQuestion.question}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className={styles.captionBoldText}>СОВЕРШЕННО ВЕРНО!</p>
+              <p className={styles.captionThinText}>
+                {currentQuestion.rightAnswer?.title}
+              </p>
+            </>
           )}
         </div>
         {!isRightTheme ? (
-          <>
-            <p
-              className={classNames(
-                styles.notPickedFirst,
-                isWrongTheme && styles.notPickedFirst__wrong,
-              )}
-            >
-              Выберите верный ответ
-            </p>
-            <p className={styles.notPickedSecond}>{currentQuestion.question}</p>
-          </>
+          <div className={styles.answersWrapper}>
+            {currentQuestion.answers.map((item, idx) => (
+              <AnswerPickCard
+                key={idx}
+                icon={item.icon ? createElement(item.icon) : undefined}
+                answerVariant={item.id}
+                text={item.text}
+                isWrong={!item.isTrue}
+                subWrongText={item.subWrongText}
+                wrongText={item.wrongText}
+              />
+            ))}
+          </div>
         ) : (
-          <>
-            <p className={styles.captionBoldText}>СОВЕРШЕННО ВЕРНО!</p>
-            <p className={styles.captionThinText}>
-              {currentQuestion.rightAnswer?.title}
+          <RightContent
+            imgSrc={
+              slideNumberToImg[
+                currentQuestion.id as keyof typeof slideNumberToImg
+              ]
+            }
+            whiteSubText={currentQuestion.rightAnswer?.whiteSubText}
+            importantSubText={currentQuestion.rightAnswer?.importantSubText}
+            unimportantSubText={currentQuestion.rightAnswer?.unimportantSubText}
+            handleNext={handleNext}
+            isCheaper={currentQuestion.id === '3'}
+            isFinal={currentQuestion.id === '5'}
+          />
+        )}
+        {!isRightTheme && currentQuestion.id === '1' && (
+          <div className={styles.warning}>
+            <div>
+              <img src={imgUrl} />
+            </div>
+            <p>
+              ВАЖНО: Не исключает риски. Аэрозоль содержит никотин, вызывающий
+              зависимость
             </p>
-          </>
+          </div>
+        )}
+        {isWrongContentShow && (
+          <button className={styles.lookRightAnswer} onClick={handleRightTheme}>
+            Посмотреть верный ответ
+          </button>
         )}
       </div>
-      {!isRightTheme ? (
-        <div className={styles.answersWrapper}>
-          {currentQuestion.answers.map((item, idx) => (
-            <AnswerPickCard
-              key={idx}
-              icon={item.icon ? createElement(item.icon) : undefined}
-              answerVariant={item.id}
-              text={item.text}
-              isWrong={!item.isTrue}
-              subWrongText={item.subWrongText}
-              wrongText={item.wrongText}
-            />
-          ))}
-        </div>
-      ) : (
-        <RightContent
-          imgSrc={
-            slideNumberToImg[
-              currentQuestion.id as keyof typeof slideNumberToImg
-            ]
-          }
-          whiteSubText={currentQuestion.rightAnswer?.whiteSubText}
-          importantSubText={currentQuestion.rightAnswer?.importantSubText}
-          unimportantSubText={currentQuestion.rightAnswer?.unimportantSubText}
-          handleNext={handleNext}
-          isCheaper={currentQuestion.id === '3'}
-          isFinal={currentQuestion.id === '5'}
-        />
-      )}
-      {!isRightTheme && currentQuestion.id === '1' && (
-        <div className={styles.warning}>
-          <div>
-            <img src={imgUrl} />
-          </div>
-          <p>
-            ВАЖНО: Не исключает риски. Аэрозоль содержит никотин, вызывающий
-            зависимость
-          </p>
-        </div>
-      )}
-      {isWrongContentShow && (
-        <button className={styles.lookRightAnswer} onClick={handleRightTheme}>
-          Посмотреть верный ответ
-        </button>
-      )}
     </div>
   )
 }
