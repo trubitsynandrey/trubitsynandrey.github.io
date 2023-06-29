@@ -27,7 +27,6 @@ export const Quiz = () => {
     currentQuestion,
     handleNextQuestion,
     isWrongTheme,
-    setIsWrongTheme,
     isRightTheme,
     setIsRightTheme,
     startFromTheBeginning,
