@@ -2,16 +2,16 @@ import React, {
   createContext,
   PropsWithChildren,
   useContext,
-  useMemo,
   useRef,
   useState,
 } from 'react'
+import _ from 'lodash'
 
 import { quizData } from '../data/quizData'
 
 interface Answer {
   id: string
-  icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+  icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
   text: string
   isTrue?: boolean
   wrongText?: string
@@ -21,7 +21,15 @@ interface Answer {
 interface Question {
   id: string
   question: string
+  rightAnswer?: RightAnswer
   answers: Answer[]
+}
+
+export type RightAnswer = {
+  title: string
+  whiteSubText?: string
+  importantSubText?: string
+  unimportantSubText?: string[]
 }
 
 interface InitialValues {
@@ -29,6 +37,9 @@ interface InitialValues {
   handleNextQuestion: () => void
   isWrongTheme: boolean
   setIsWrongTheme: React.Dispatch<React.SetStateAction<boolean>>
+  isRightTheme: boolean
+  setIsRightTheme: React.Dispatch<React.SetStateAction<boolean>>
+  startFromTheBeginning: () => void
 }
 
 const initial: InitialValues = {
@@ -36,6 +47,9 @@ const initial: InitialValues = {
   handleNextQuestion: () => undefined,
   isWrongTheme: false,
   setIsWrongTheme: () => undefined,
+  isRightTheme: false,
+  setIsRightTheme: () => undefined,
+  startFromTheBeginning: () => undefined,
 }
 
 const QuizContext = createContext<InitialValues>(initial)
@@ -44,21 +58,31 @@ export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const index = useRef(0)
   const [currentQuestion, setCurrentQuestion] = useState<Question>(quizData[0])
   const [isWrongTheme, setIsWrongTheme] = useState(false)
+  const [isRightTheme, setIsRightTheme] = useState(false)
 
   const handleNextQuestion = () => {
     index.current += 1
-    setCurrentQuestion(quizData[index.current])
+    setCurrentQuestion(_.cloneDeep(quizData[index.current]))
+    setIsRightTheme(false)
+    setIsWrongTheme(false)
   }
 
-  const values: InitialValues = useMemo(
-    () => ({
-      currentQuestion,
-      handleNextQuestion,
-      isWrongTheme,
-      setIsWrongTheme,
-    }),
-    [handleNextQuestion, currentQuestion],
-  )
+  const startFromTheBeginning = () => {
+    index.current = 0
+    setCurrentQuestion(_.cloneDeep(quizData[index.current]))
+    setIsRightTheme(false)
+    setIsWrongTheme(false)
+  }
+
+  const values: InitialValues = {
+    currentQuestion,
+    handleNextQuestion,
+    isWrongTheme,
+    setIsWrongTheme,
+    isRightTheme,
+    setIsRightTheme,
+    startFromTheBeginning,
+  }
 
   return <QuizContext.Provider value={values}>{children}</QuizContext.Provider>
 }

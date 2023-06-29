@@ -1,4 +1,5 @@
 import './App.scss'
+import './fonts/fonts.css'
 
 import { useState } from 'react'
 
@@ -13,9 +14,11 @@ function App() {
 
   return (
     <>
-      <QuizProvider>
-        <Quiz />
-      </QuizProvider>
+      {!isModal && (
+        <QuizProvider>
+          <Quiz />
+        </QuizProvider>
+      )}
       <Modal handleCloseModal={handleCloseModal} isModal={isModal} />
     </>
   )

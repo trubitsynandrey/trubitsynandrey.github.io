@@ -3,6 +3,8 @@
   padding: 60px;
   background-color: #00d1d2;
   flex: 1;
+  display: flex;
+  flex-direction: column;
 
   &__wrong {
     background-color: #34303d;
@@ -10,21 +12,21 @@
 }
 
 .answersWrapper {
+  margin-top: 110px;
   display: flex;
   flex-direction: column;
   gap: 40px;
 }
 
 .sliderCaption {
-  height: 236px;
   border-radius: 36px;
   border: 4px solid #fffdfb;
   background: #fffdfb;
-  margin-bottom: 110px;
   text-align: center;
+  padding-bottom: 34px;
   & > div {
     height: 60px;
-    background-color: #00D1D2;
+    background-color: #00d1d2;
     border-radius: 36px 36px 0 0;
     display: flex;
     align-items: center;
@@ -35,13 +37,29 @@
   & > p:first-of-type {
     margin-top: 28px;
     margin-bottom: 16px;
-    color: #34303D;
-    font-size: 28px;
+
   }
-  & > p:last-child {
+  & > p.captionThinText {
+    color: #34303d;
+    font-size: 24px;
+  }
+  & > p.notPickedFirst {
+    font-size: 28px;
+    color: #00d1d2;
+    &__wrong {
+      color: rgba(52, 48, 61, 1);
+    }
+  }
+  & > p.notPickedSecond {
     font-size: 36px;
     font-weight: 700;
-    color: #00D1D2;
+    color: rgba(52, 48, 61, 1);
+    text-transform: uppercase;
+  }
+  & > p.captionBoldText {
+    font-size: 36px;
+    font-weight: 700;
+    color: #00d1d2;
     text-transform: uppercase;
   }
 }
@@ -50,11 +68,11 @@
   width: 16px;
   height: 16px;
   border-radius: 999px;
-  border: 2px solid #FFFDFB;
+  border: 2px solid #fffdfb;
   &__active {
     width: 24px;
     height: 24px;
-    background: #FFFDFB;
+    background: #fffdfb;
   }
 }
 
@@ -66,7 +84,7 @@
   display: flex;
   border-radius: 999px;
   margin-top: 36px;
-  height: 71px;;
+  height: 71px;
   display: flex;
   padding: 0 24px;
   justify-content: flex-start;
@@ -83,5 +101,30 @@
     font-size: 16px;
     color: rgba(184, 183, 187, 1);
     text-transform: uppercase;
+  }
+}
+
+.lookRightAnswer {
+  margin-top: 32px;
+  color: #fffdfb;
+  text-align: center;
+  font-size: 32px;
+  width: 100%;
+}
+
+.fadeIn {
+  /* animation styles */
+  animation: myAnimation 1.5s;
+}
+
+/* Keyframes animation */
+@keyframes myAnimation {
+  0% {
+    /* initial state */
+    opacity: 0;
+  }
+  100% {
+    /* final state */
+    opacity: 1;
   }
 }

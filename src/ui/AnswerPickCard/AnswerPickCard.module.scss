@@ -23,6 +23,7 @@
   }
   &__wrong {
     background-color: #DB3624;
+    word-wrap: break-word;
     & > div:first-of-type {
       & > p {
         font-size: 24px;
@@ -50,6 +51,7 @@
   border-radius: 999px;
   top: -5px;
   left: -4px;
+  font-weight: 400;
   &__wrong {
     background-color: #DB3624;
   }
