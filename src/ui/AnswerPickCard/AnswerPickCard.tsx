@@ -46,7 +46,9 @@ const AnswerPickCard = ({
     >
       {icon}
       <div>
-        {isWrongTriggered && <p>Неверный ответ</p>}
+        {isWrongTriggered && (
+          <p style={{ marginBottom: '8px' }}>Неверный ответ</p>
+        )}
         {!isWrongTriggered &&
           paragraphs.map((paragraph, index) => (
             <p key={index} style={{ marginLeft: icon ? '0px' : '54px' }}>
