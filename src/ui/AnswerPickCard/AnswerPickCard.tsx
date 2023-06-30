@@ -47,8 +47,11 @@ const AnswerPickCard = ({
         isWrongTriggered && styles.card__wrong,
       )}
     >
-      {icon}
-      <div style={{ marginLeft: icon ? '24px' : '80px' }}>
+      {icon && <div className={styles.iconWrapper}>{icon}</div>}
+      <div
+        className={styles.afterIconBox}
+        style={{ marginLeft: icon ? '24px' : '80px' }}
+      >
         {isWrongTriggered && (
           <p style={{ marginBottom: '8px' }}>Неверный ответ</p>
         )}

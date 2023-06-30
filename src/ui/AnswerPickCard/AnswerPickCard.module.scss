@@ -16,13 +16,13 @@
   align-items: center;
   text-align: left;
   padding-right: 80px;
-  & > svg {
+  & > .iconWrapper {
     margin-left: 40px;
   }
   &__wrong {
     background-color: #DB3624;
     word-wrap: break-word;
-    & > div:first-of-type {
+    & > .afterIconBox {
       & > p {
         font-size: 24px;
         font-weight: 400;
@@ -70,4 +70,9 @@
 
 .wrongSubText {
   font-size: 10px !important;
+}
+
+.iconWrapper {
+  width: 80px;
+  height: 80px;
 }
