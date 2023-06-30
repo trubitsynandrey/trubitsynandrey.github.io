@@ -7,7 +7,7 @@
   background: rgba(52, 48, 61, 0.6);
   transition: opacity 0.4s ease-in-out;
   &__closed {
-    transform: translateX(-200vh);
+    transform: translateY(-100vh);
     opacity: 0;
   }
 }
@@ -38,7 +38,7 @@
     }
   }
   &__closed {
-    transform: translateX(-200vh);
+    transform: translateY(-100vh);
     opacity: 0;
   }
 }
