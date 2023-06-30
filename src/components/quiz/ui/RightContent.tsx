@@ -5,7 +5,13 @@ import { RightAnswer } from '../../../containers/QuizProvider'
 import styles from './RightContent.module.scss'
 
 type Props = {
-  imgSrc: string | string[]
+  imgSrc: {
+    url: string | string[]
+    sizes: {
+      width?: string
+      height?: string
+    }
+  }
   handleNext: () => void
   isCheaper?: boolean
   isFinal?: boolean
@@ -25,7 +31,7 @@ const RightContent = ({
   const interval = useRef<number>()
 
   useEffect(() => {
-    if (!Array.isArray(imgSrc)) return
+    if (!Array.isArray(imgSrc.url)) return
     interval.current = setInterval(() => {
       setActive((prev) => !prev)
     }, 3000)
@@ -39,9 +45,12 @@ const RightContent = ({
     <>
       <div className={styles.container}>
         <div className={styles.imgWrapper}>
-          {!Array.isArray(imgSrc) ? (
+          {!Array.isArray(imgSrc.url) ? (
             <>
-              <img src={imgSrc} />
+              <img
+                src={imgSrc.url}
+                style={{ height: imgSrc.sizes?.height ?? '472px' }}
+              />
               {isCheaper && (
                 <div className={styles.isCheaperBox}>
                   <p>Такие простые вещи могут изменить качество нашей жизни.</p>
@@ -54,12 +63,13 @@ const RightContent = ({
             </>
           ) : (
             <>
-              {imgSrc.map((src, idx) => (
+              {imgSrc.url.map((src, idx) => (
                 <div
                   key={idx}
                   className={classNames(
                     idx === 0 && active && styles.notActiveImg,
                   )}
+                  style={{ height: imgSrc.sizes?.height ?? '472px' }}
                 >
                   <img src={src} />
                 </div>

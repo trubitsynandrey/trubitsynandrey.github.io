@@ -15,11 +15,19 @@ import styles from './quiz.module.scss'
 import RightContent from './ui/RightContent'
 
 const slideNumberToImg = {
-  '1': imgCoffe,
-  '2': [imgAsh, imgBurn],
-  '3': imgCheaper,
-  '4': imgPrice,
-  '5': imgRent,
+  '1': {
+    url: imgCoffe,
+    sizes: {},
+  },
+  '2': { url: [imgAsh, imgBurn], sizes: {} },
+  '3': {
+    url: imgCheaper,
+    sizes: {
+      height: '390px',
+    },
+  },
+  '4': { url: imgPrice, sizes: {} },
+  '5': { url: imgRent, sizes: {} },
 }
 
 export const Quiz = () => {
