@@ -101,14 +101,14 @@ export const Quiz = () => {
               >
                 Выберите верный ответ
               </p>
-              <p className={styles.notPickedSecond}>
+              <p className={classNames(styles.notPickedSecond, styles.p_x_12)}>
                 {currentQuestion.question}
               </p>
             </>
           ) : (
             <>
-              <p className={styles.captionBoldText}>СОВЕРШЕННО ВЕРНО!</p>
-              <p className={styles.captionThinText}>
+              <p className={styles.captionBoldText}>ВЕРНЫЙ ОТВЕТ</p>
+              <p className={classNames(styles.captionThinText, styles.p_x_12)}>
                 {currentQuestion.rightAnswer?.title}
               </p>
             </>
