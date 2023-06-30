@@ -12,6 +12,7 @@ interface Props {
   subWrongText?: string
   wrongText?: string
   isWrong?: boolean
+  scrollToTop?: () => void
 }
 
 const AnswerPickCard = ({
@@ -21,6 +22,7 @@ const AnswerPickCard = ({
   subWrongText,
   wrongText,
   isWrong,
+  scrollToTop,
 }: Props) => {
   const paragraphs = text.split('\n')
   const [isWrongTriggered, setIsWrongTriggered] = useState(false)
@@ -36,6 +38,7 @@ const AnswerPickCard = ({
           setIsWrongTheme(true)
         } else {
           setIsRightTheme(true)
+          scrollToTop && scrollToTop()
         }
       }}
       type="button"

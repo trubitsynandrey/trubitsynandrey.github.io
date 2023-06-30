@@ -40,19 +40,20 @@ export const Quiz = () => {
     startFromTheBeginning,
   } = useQuizContext()
 
-  const handleRightTheme = () => {
-    setIsRightTheme(true)
-  }
-
   const caption = useRef<HTMLDivElement | null>(null)
-
-  const isFinal = currentQuestion.id === '5'
-
-  const [animate, setAnimate] = useState(false)
 
   const scrollToTop = () => {
     caption.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
+
+  const handleRightTheme = () => {
+    setIsRightTheme(true)
+    scrollToTop()
+  }
+
+  const isFinal = currentQuestion.id === '5'
+
+  const [animate, setAnimate] = useState(false)
 
   const handleClick = () => {
     setAnimate(true)
@@ -133,6 +134,7 @@ export const Quiz = () => {
                 isWrong={!item.isTrue}
                 subWrongText={item.subWrongText}
                 wrongText={item.wrongText}
+                scrollToTop={item.isTrue ? scrollToTop : undefined}
               />
             ))}
           </div>
