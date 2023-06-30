@@ -65,6 +65,7 @@ const AnswerPickCard = ({
           className={classNames(
             styles.circle,
             isWrongTriggered && styles.circle__wrong,
+            styles.text,
           )}
         >
           {answerVariant}

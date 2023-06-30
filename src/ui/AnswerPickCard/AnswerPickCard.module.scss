@@ -52,13 +52,19 @@
   top: -5px;
   left: -4px;
   font-weight: 400;
-  
+
   &__wrong {
     background-color: #DB3624;
   }
   &__none {
     display: none;
   }
+}
+
+.circle.text {
+  display: unset;
+  text-align: center;
+  line-height: 36px;
 }
 
 .wrongSubText {
