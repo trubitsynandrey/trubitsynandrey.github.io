@@ -1,9 +1,7 @@
-import { createElement, useRef, useState } from 'react'
+import { createElement, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import imgUrl from '../../assets/adult.png'
-import imgAsh from '../../assets/ash.png'
-import imgBurn from '../../assets/burning.png'
 import imgCheaper from '../../assets/cheaper.png'
 import imgCoffe from '../../assets/coffe.png'
 import imgPrice from '../../assets/price.png'
@@ -11,6 +9,7 @@ import imgRent from '../../assets/rent.png'
 import { useQuizContext } from '../../containers/QuizProvider'
 import { quizData } from '../../data/quizData'
 import AnswerPickCard from '../../ui/AnswerPickCard/AnswerPickCard'
+import RateUsModal from '../rate-us-modal/RateUsModal'
 import styles from './quiz.module.scss'
 import RightContent from './ui/RightContent'
 
@@ -19,15 +18,14 @@ const slideNumberToImg = {
     url: imgCoffe,
     sizes: {},
   },
-  '2': { url: [imgAsh, imgBurn], sizes: {} },
-  '3': {
+  '2': {
     url: imgCheaper,
     sizes: {
       height: '390px',
     },
   },
-  '4': { url: imgPrice, sizes: {} },
-  '5': { url: imgRent, sizes: {} },
+  '3': { url: imgPrice, sizes: {} },
+  '4': { url: imgRent, sizes: {} },
 }
 
 export const Quiz = () => {
@@ -41,6 +39,7 @@ export const Quiz = () => {
   } = useQuizContext()
 
   const caption = useRef<HTMLDivElement | null>(null)
+  const timeOutRateModal = useRef<number>()
 
   const scrollToTop = () => {
     caption.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -51,9 +50,14 @@ export const Quiz = () => {
     scrollToTop()
   }
 
-  const isFinal = currentQuestion.id === '5'
+  const isFinal = currentQuestion.id === '4'
 
   const [animate, setAnimate] = useState(false)
+  const [isRateModal, setIsRateModal] = useState(false)
+
+  const handleCloseRateModal = () => {
+    setIsRateModal(false)
+  }
 
   const handleClick = () => {
     setAnimate(true)
@@ -61,6 +65,20 @@ export const Quiz = () => {
       setAnimate(false)
     }, 1000)
   }
+
+  useEffect(() => {
+    if (currentQuestion.id == '4' && isRightTheme) {
+      timeOutRateModal.current = setTimeout(() => {
+        setIsRateModal(true)
+      }, 1000)
+    } else {
+      return
+    }
+
+    return () => {
+      clearTimeout(timeOutRateModal.current)
+    }
+  }, [currentQuestion, isRightTheme])
 
   const handleNext = () => {
     if (isFinal) {
@@ -149,8 +167,8 @@ export const Quiz = () => {
             importantSubText={currentQuestion.rightAnswer?.importantSubText}
             unimportantSubText={currentQuestion.rightAnswer?.unimportantSubText}
             handleNext={handleNext}
-            isCheaper={currentQuestion.id === '3'}
-            isFinal={currentQuestion.id === '5'}
+            isCheaper={currentQuestion.id === '2'}
+            isFinal={isFinal}
           />
         )}
         {!isRightTheme && currentQuestion.id === '1' && (
@@ -170,6 +188,10 @@ export const Quiz = () => {
           </button>
         )}
       </div>
+      <RateUsModal
+        handleCloseModal={handleCloseRateModal}
+        isModal={isRateModal}
+      />
     </div>
   )
 }
