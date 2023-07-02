@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
+import imgAsh from '../../../assets/burning.png'
 import { RightAnswer, useQuizContext } from '../../../containers/QuizProvider'
 import RateUsModal from '../../rate-us-modal/RateUsModal'
 import styles from './RightContent.module.scss'
 
 type Props = {
   imgSrc: {
-    url: string | string[]
+    url: string
     sizes: {
       width?: string
       height?: string
@@ -55,10 +56,10 @@ const RightContent = ({
   const interval = useRef<number>()
 
   useEffect(() => {
-    if (!Array.isArray(imgSrc.url)) return
+    if (!isCheaper) return
     interval.current = setInterval(() => {
       setActive((prev) => !prev)
-    }, 3000)
+    }, 2800)
 
     return () => {
       clearInterval(interval.current)
@@ -68,14 +69,38 @@ const RightContent = ({
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.imgWrapper}>
-          {!Array.isArray(imgSrc.url) ? (
+        <div
+          className={classNames(
+            styles.imgWrapper,
+            isCheaper && styles.interactiveWrapper,
+            isCheaper && active && styles.notActiveDiv,
+          )}
+        >
+          {!isCheaper ? (
             <>
               <img
                 src={imgSrc.url}
                 style={{ height: imgSrc.sizes?.height ?? '472px' }}
               />
-              {isCheaper && (
+              <div className={styles.description}>
+                <p>{whiteSubText}</p>
+                {importantSubText && (
+                  <p className={styles.importantText}>{importantSubText}</p>
+                )}
+                {unimportantSubText?.map((item, idx) => (
+                  <p key={idx} className={styles.unimportantText}>
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <img
+                  src={imgSrc.url}
+                  style={{ height: imgSrc.sizes?.height ?? '472px' }}
+                />
                 <div className={styles.isCheaperBox}>
                   <p>Такие простые вещи могут изменить качество нашей жизни.</p>
                   <p>
@@ -83,37 +108,23 @@ const RightContent = ({
                     волосах и одежде по сравнению с курением сигарет
                   </p>
                 </div>
-              )}
-            </>
-          ) : (
-            <>
-              {imgSrc.url.map((src, idx) => (
-                <div
-                  key={idx}
-                  className={classNames(
-                    idx === 0 && active && styles.notActiveImg,
-                  )}
-                  style={{ height: imgSrc.sizes?.height ?? '472px' }}
-                >
-                  <img src={src} />
+              </div>
+              <div>
+                <img src={imgAsh} style={{ height: '390px' }} />
+                <div className={styles.description}>
+                  <p>
+                    IQOS ПОЗВОЛЯЕТ НАСЛАДИТЬСЯ НАСТОЯЩИМ ВКУСОМ ТАБАКА. БЕЗ
+                    ГОРЕНИЯ. БЕЗ ДЫМА. БЕЗ ПЕПЛА.
+                  </p>
+                  <p className={styles.unimportantText}>
+                    Важно: не исключает риски, в аэрозоле содержится никотин,
+                    вызывающий зависимость.
+                  </p>
                 </div>
-              ))}
+              </div>
             </>
           )}
         </div>
-        {!isCheaper && (
-          <div className={styles.description}>
-            <p>{whiteSubText}</p>
-            {importantSubText && (
-              <p className={styles.importantText}>{importantSubText}</p>
-            )}
-            {unimportantSubText?.map((item, idx) => (
-              <p key={idx} className={styles.unimportantText}>
-                {item}
-              </p>
-            ))}
-          </div>
-        )}
       </div>
       <button className={styles.nextButton} onClick={buttonOnClick}>
         {buttonText}

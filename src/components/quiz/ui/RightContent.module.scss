@@ -4,18 +4,31 @@
   & > img {
     width: 100%;
   }
-  & > div:first-child {
-    position: absolute;
-    width: 100%;
-  }
+}
+
+.interactiveWrapper {
   & > div {
     transition: opacity 1s ease-in-out;
   }
-}
+    & > div:nth-child(2) {
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
 
-.notActiveImg {
-  transition: opacity 1s ease-in-out;
-  opacity: 0;
+  & > div:nth-child(2) {
+    opacity: 0;
+  }
+
+  &.notActiveDiv {
+    & > div:first-child {
+      transition: opacity 1s ease-in-out;
+      opacity: 0;
+    }
+    & > div:nth-child(2) {
+      opacity: 1;
+    }
+  }
 }
 
 .nextButton {
