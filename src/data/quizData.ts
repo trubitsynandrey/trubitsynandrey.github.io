@@ -86,6 +86,7 @@ export const quizData = [
     question: 'Сколько стоит устройство IQOS 3 duos?',
     rightAnswer: {
       title: 'Цена IQOS 3 DUOS - 1 990 ₽',
+      whiteText: 'НА 95% МЕНЬШЕ',
       whiteSubText:
         'При использовании IQOS выделяется на 95% меньше вредных веществ по сравнению с сигаретами.*',
       importantSubText:

@@ -27,6 +27,7 @@ interface Question {
 
 export type RightAnswer = {
   title: string
+  whiteText?: string
   whiteSubText?: string
   importantSubText?: string
   unimportantSubText?: string[]

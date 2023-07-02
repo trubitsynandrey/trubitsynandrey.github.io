@@ -147,6 +147,7 @@ export const Quiz = () => {
             whiteSubText={currentQuestion.rightAnswer?.whiteSubText}
             importantSubText={currentQuestion.rightAnswer?.importantSubText}
             unimportantSubText={currentQuestion.rightAnswer?.unimportantSubText}
+            whiteText={currentQuestion.rightAnswer?.whiteText}
             handleNext={handleNext}
             isCheaper={currentQuestion.id === '2'}
             isFinal={isFinal}

@@ -23,6 +23,7 @@ const startOverString = 'Начать заново'
 
 const RightContent = ({
   imgSrc,
+  whiteText,
   whiteSubText,
   importantSubText,
   unimportantSubText,
@@ -83,6 +84,9 @@ const RightContent = ({
                 style={{ height: imgSrc.sizes?.height ?? '472px' }}
               />
               <div className={styles.description}>
+                {whiteText && (
+                  <p style={{ marginBottom: '-8px' }}>{whiteText}</p>
+                )}
                 <p>{whiteSubText}</p>
                 {importantSubText && (
                   <p className={styles.importantText}>{importantSubText}</p>
