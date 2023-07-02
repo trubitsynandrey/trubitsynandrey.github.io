@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
-import { RightAnswer } from '../../../containers/QuizProvider'
+import { RightAnswer, useQuizContext } from '../../../containers/QuizProvider'
+import RateUsModal from '../../rate-us-modal/RateUsModal'
 import styles from './RightContent.module.scss'
 
 type Props = {
@@ -17,6 +18,8 @@ type Props = {
   isFinal?: boolean
 } & Partial<Omit<RightAnswer, 'title'>>
 
+const startOverString = 'Начать заново'
+
 const RightContent = ({
   imgSrc,
   whiteSubText,
@@ -27,6 +30,27 @@ const RightContent = ({
   isFinal,
 }: Props) => {
   const [active, setActive] = useState(false)
+
+  const { isBeenRated } = useQuizContext()
+
+  const [isRateModal, setIsRateModal] = useState(false)
+  const [buttonText, setButtonText] = useState('Продолжить игру')
+
+  const handleOpenModal = () => {
+    setIsRateModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setTimeout(() => {
+      setIsRateModal(false)
+    }, 500)
+
+    setButtonText(startOverString)
+  }
+
+  const buttonOnClick = () =>
+    // eslint-disable-next-line no-nested-ternary
+    isBeenRated ? handleNext() : isFinal ? handleOpenModal() : handleNext()
 
   const interval = useRef<number>()
 
@@ -91,9 +115,10 @@ const RightContent = ({
           </div>
         )}
       </div>
-      <button className={styles.nextButton} onClick={handleNext}>
-        {!isFinal ? 'Продолжить игру' : 'Начать заново'}
+      <button className={styles.nextButton} onClick={buttonOnClick}>
+        {buttonText}
       </button>
+      <RateUsModal handleCloseModal={handleCloseModal} isModal={isRateModal} />
     </>
   )
 }

@@ -40,6 +40,8 @@ interface InitialValues {
   isRightTheme: boolean
   setIsRightTheme: React.Dispatch<React.SetStateAction<boolean>>
   startFromTheBeginning: () => void
+  isBeenRated: boolean
+  setIsBeenRated: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const initial: InitialValues = {
@@ -50,6 +52,8 @@ const initial: InitialValues = {
   isRightTheme: false,
   setIsRightTheme: () => undefined,
   startFromTheBeginning: () => undefined,
+  isBeenRated: false,
+  setIsBeenRated: () => undefined,
 }
 
 const QuizContext = createContext<InitialValues>(initial)
@@ -59,6 +63,7 @@ export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [currentQuestion, setCurrentQuestion] = useState<Question>(quizData[0])
   const [isWrongTheme, setIsWrongTheme] = useState(false)
   const [isRightTheme, setIsRightTheme] = useState(false)
+  const [isBeenRated, setIsBeenRated] = useState(false)
 
   const handleNextQuestion = () => {
     index.current += 1
@@ -82,6 +87,8 @@ export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
     isRightTheme,
     setIsRightTheme,
     startFromTheBeginning,
+    isBeenRated,
+    setIsBeenRated,
   }
 
   return <QuizContext.Provider value={values}>{children}</QuizContext.Provider>

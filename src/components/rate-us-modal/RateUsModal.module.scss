@@ -5,7 +5,7 @@
   width: 100%;
   height: 100%;
   background: rgba(52, 48, 61, 0.6);
-  transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in;
   &__closed {
     transform: translateY(-100vh);
     opacity: 0;
@@ -22,7 +22,7 @@
   width: 624px;
   border-radius: 36px;
   background: #fffdfb;
-  transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in;
   & > div:first-child {
     padding: 0 60px;
     border-radius: 36px 36px 0px 0px;
@@ -38,7 +38,7 @@
     }
   }
   &__closed {
-    transform: translateY(-100vh);
+    top: -100vh;
     opacity: 0;
   }
 }
@@ -73,4 +73,10 @@
   left: 50%;
   top: 1%;
   transform: translate(-50%, -50%);
+}
+
+.filled {
+  & > svg {
+    fill: #00D2D3;
+  }
 }

@@ -1,4 +1,4 @@
-import { createElement, useEffect, useRef, useState } from 'react'
+import { createElement, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import imgUrl from '../../assets/adult.png'
@@ -9,7 +9,6 @@ import imgRent from '../../assets/rent.png'
 import { useQuizContext } from '../../containers/QuizProvider'
 import { quizData } from '../../data/quizData'
 import AnswerPickCard from '../../ui/AnswerPickCard/AnswerPickCard'
-import RateUsModal from '../rate-us-modal/RateUsModal'
 import styles from './quiz.module.scss'
 import RightContent from './ui/RightContent'
 
@@ -36,10 +35,10 @@ export const Quiz = () => {
     isRightTheme,
     setIsRightTheme,
     startFromTheBeginning,
+    setIsBeenRated,
   } = useQuizContext()
 
   const caption = useRef<HTMLDivElement | null>(null)
-  const timeOutRateModal = useRef<number>()
 
   const scrollToTop = () => {
     caption.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -53,11 +52,6 @@ export const Quiz = () => {
   const isFinal = currentQuestion.id === '4'
 
   const [animate, setAnimate] = useState(false)
-  const [isRateModal, setIsRateModal] = useState(false)
-
-  const handleCloseRateModal = () => {
-    setIsRateModal(false)
-  }
 
   const handleClick = () => {
     setAnimate(true)
@@ -66,23 +60,10 @@ export const Quiz = () => {
     }, 1000)
   }
 
-  useEffect(() => {
-    if (currentQuestion.id == '4' && isRightTheme) {
-      timeOutRateModal.current = setTimeout(() => {
-        setIsRateModal(true)
-      }, 1000)
-    } else {
-      return
-    }
-
-    return () => {
-      clearTimeout(timeOutRateModal.current)
-    }
-  }, [currentQuestion, isRightTheme])
-
   const handleNext = () => {
     if (isFinal) {
       startFromTheBeginning()
+      setIsBeenRated(false)
     } else {
       handleNextQuestion()
     }
@@ -188,10 +169,6 @@ export const Quiz = () => {
           </button>
         )}
       </div>
-      <RateUsModal
-        handleCloseModal={handleCloseRateModal}
-        isModal={isRateModal}
-      />
     </div>
   )
 }
