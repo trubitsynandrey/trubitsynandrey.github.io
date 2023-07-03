@@ -60,7 +60,7 @@ const RightContent = ({
     if (!isCheaper) return
     interval.current = setInterval(() => {
       setActive((prev) => !prev)
-    }, 2800)
+    }, 5000)
 
     return () => {
       clearInterval(interval.current)
