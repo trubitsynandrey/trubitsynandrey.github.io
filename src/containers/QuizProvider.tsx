@@ -43,6 +43,8 @@ interface InitialValues {
   startFromTheBeginning: () => void
   isBeenRated: boolean
   setIsBeenRated: React.Dispatch<React.SetStateAction<boolean>>
+  isStartModal: boolean
+  setIsStartModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const initial: InitialValues = {
@@ -55,6 +57,8 @@ const initial: InitialValues = {
   startFromTheBeginning: () => undefined,
   isBeenRated: false,
   setIsBeenRated: () => undefined,
+  isStartModal: true,
+  setIsStartModal: () => undefined,
 }
 
 const QuizContext = createContext<InitialValues>(initial)
@@ -65,6 +69,7 @@ export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [isWrongTheme, setIsWrongTheme] = useState(false)
   const [isRightTheme, setIsRightTheme] = useState(false)
   const [isBeenRated, setIsBeenRated] = useState(false)
+  const [isStartModal, setIsStartModal] = useState(true)
 
   const handleNextQuestion = () => {
     index.current += 1
@@ -78,6 +83,7 @@ export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setCurrentQuestion(_.cloneDeep(quizData[index.current]))
     setIsRightTheme(false)
     setIsWrongTheme(false)
+    setIsStartModal(true)
   }
 
   const values: InitialValues = {
@@ -90,6 +96,8 @@ export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
     startFromTheBeginning,
     isBeenRated,
     setIsBeenRated,
+    isStartModal,
+    setIsStartModal,
   }
 
   return <QuizContext.Provider value={values}>{children}</QuizContext.Provider>

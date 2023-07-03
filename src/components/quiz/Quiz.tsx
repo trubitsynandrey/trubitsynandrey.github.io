@@ -9,6 +9,7 @@ import imgRent from '../../assets/rent.png'
 import { useQuizContext } from '../../containers/QuizProvider'
 import { quizData } from '../../data/quizData'
 import AnswerPickCard from '../../ui/AnswerPickCard/AnswerPickCard'
+import { Modal } from '../modal/Modal'
 import styles from './quiz.module.scss'
 import RightContent from './ui/RightContent'
 
@@ -36,7 +37,11 @@ export const Quiz = () => {
     setIsRightTheme,
     startFromTheBeginning,
     setIsBeenRated,
+    isStartModal,
+    setIsStartModal,
   } = useQuizContext()
+
+  const handleCloseModal = () => setIsStartModal(false)
 
   const caption = useRef<HTMLDivElement | null>(null)
 
@@ -75,101 +80,116 @@ export const Quiz = () => {
   const isWrongContentShow = isWrongTheme && !isRightTheme
 
   return (
-    <div
-      className={classNames(
-        styles.container,
-        isWrongContentShow && styles.container__wrong,
-        animate && styles.fadeIn,
-      )}
-    >
-      <div>
-        <div className={styles.sliderCaption} ref={caption}>
-          <div
-            className={classNames(isWrongContentShow && styles.caption__wrong)}
-          >
-            {Array.from({ length: quizData.length }, (_, i) =>
-              String(i + 1),
-            ).map((item, idx) => (
-              <div
-                key={idx}
-                className={classNames(
-                  styles.circlePoint,
-                  currentQuestion.id === item && styles.circlePoint__active,
-                )}
-              ></div>
-            ))}
+    <>
+      <div
+        className={classNames(
+          styles.container,
+          isWrongContentShow && styles.container__wrong,
+          animate && styles.fadeIn,
+          isStartModal && styles.startModal,
+        )}
+      >
+        <div>
+          <div className={styles.sliderCaption} ref={caption}>
+            <div
+              className={classNames(
+                isWrongContentShow && styles.caption__wrong,
+              )}
+            >
+              {Array.from({ length: quizData.length }, (_, i) =>
+                String(i + 1),
+              ).map((item, idx) => (
+                <div
+                  key={idx}
+                  className={classNames(
+                    styles.circlePoint,
+                    currentQuestion.id === item && styles.circlePoint__active,
+                  )}
+                ></div>
+              ))}
+            </div>
+            {!isRightTheme ? (
+              <>
+                <p
+                  className={classNames(
+                    styles.notPickedFirst,
+                    isWrongTheme && styles.notPickedFirst__wrong,
+                  )}
+                >
+                  Выберите верный ответ
+                </p>
+                <p
+                  className={classNames(styles.notPickedSecond, styles.p_x_12)}
+                >
+                  {currentQuestion.question}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className={styles.captionBoldText}>ВЕРНЫЙ ОТВЕТ</p>
+                <p
+                  className={classNames(styles.captionThinText, styles.p_x_12)}
+                >
+                  {currentQuestion.rightAnswer?.title}
+                </p>
+              </>
+            )}
           </div>
           {!isRightTheme ? (
-            <>
-              <p
-                className={classNames(
-                  styles.notPickedFirst,
-                  isWrongTheme && styles.notPickedFirst__wrong,
-                )}
-              >
-                Выберите верный ответ
-              </p>
-              <p className={classNames(styles.notPickedSecond, styles.p_x_12)}>
-                {currentQuestion.question}
-              </p>
-            </>
+            <div className={styles.answersWrapper}>
+              {currentQuestion.answers.map((item, idx) => (
+                <AnswerPickCard
+                  key={idx}
+                  icon={item.icon ? createElement(item.icon) : undefined}
+                  answerVariant={item.id}
+                  text={item.text}
+                  isWrong={!item.isTrue}
+                  subWrongText={item.subWrongText}
+                  wrongText={item.wrongText}
+                  scrollToTop={item.isTrue ? scrollToTop : undefined}
+                />
+              ))}
+            </div>
           ) : (
-            <>
-              <p className={styles.captionBoldText}>ВЕРНЫЙ ОТВЕТ</p>
-              <p className={classNames(styles.captionThinText, styles.p_x_12)}>
-                {currentQuestion.rightAnswer?.title}
+            <RightContent
+              imgSrc={
+                slideNumberToImg[
+                  currentQuestion.id as keyof typeof slideNumberToImg
+                ]
+              }
+              whiteSubText={currentQuestion.rightAnswer?.whiteSubText}
+              importantSubText={currentQuestion.rightAnswer?.importantSubText}
+              unimportantSubText={
+                currentQuestion.rightAnswer?.unimportantSubText
+              }
+              whiteText={currentQuestion.rightAnswer?.whiteText}
+              handleNext={handleNext}
+              isCheaper={currentQuestion.id === '2'}
+              isFinal={isFinal}
+            />
+          )}
+          {!isRightTheme && currentQuestion.id === '1' && (
+            <div className={styles.warning}>
+              <div>
+                <img src={imgUrl} />
+              </div>
+              <p>
+                ВАЖНО: Не исключает риски. Аэрозоль содержит никотин, вызывающий
+                зависимость
               </p>
-            </>
+            </div>
+          )}
+          {isWrongContentShow && (
+            <button
+              className={styles.lookRightAnswer}
+              onClick={handleRightTheme}
+            >
+              Посмотреть верный ответ
+            </button>
           )}
         </div>
-        {!isRightTheme ? (
-          <div className={styles.answersWrapper}>
-            {currentQuestion.answers.map((item, idx) => (
-              <AnswerPickCard
-                key={idx}
-                icon={item.icon ? createElement(item.icon) : undefined}
-                answerVariant={item.id}
-                text={item.text}
-                isWrong={!item.isTrue}
-                subWrongText={item.subWrongText}
-                wrongText={item.wrongText}
-                scrollToTop={item.isTrue ? scrollToTop : undefined}
-              />
-            ))}
-          </div>
-        ) : (
-          <RightContent
-            imgSrc={
-              slideNumberToImg[
-                currentQuestion.id as keyof typeof slideNumberToImg
-              ]
-            }
-            whiteSubText={currentQuestion.rightAnswer?.whiteSubText}
-            importantSubText={currentQuestion.rightAnswer?.importantSubText}
-            unimportantSubText={currentQuestion.rightAnswer?.unimportantSubText}
-            whiteText={currentQuestion.rightAnswer?.whiteText}
-            handleNext={handleNext}
-            isCheaper={currentQuestion.id === '2'}
-            isFinal={isFinal}
-          />
-        )}
-        {!isRightTheme && currentQuestion.id === '1' && (
-          <div className={styles.warning}>
-            <div>
-              <img src={imgUrl} />
-            </div>
-            <p>
-              ВАЖНО: Не исключает риски. Аэрозоль содержит никотин, вызывающий
-              зависимость
-            </p>
-          </div>
-        )}
-        {isWrongContentShow && (
-          <button className={styles.lookRightAnswer} onClick={handleRightTheme}>
-            Посмотреть верный ответ
-          </button>
-        )}
       </div>
-    </div>
+      <Modal handleCloseModal={handleCloseModal} isModal={isStartModal} />
+    </>
   )
 }
