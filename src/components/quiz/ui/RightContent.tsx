@@ -85,9 +85,11 @@ const RightContent = ({
               />
               <div className={styles.description}>
                 {whiteText && (
-                  <p style={{ marginBottom: '-8px' }}>{whiteText}</p>
+                  <p style={{ marginBottom: '-8px', fontSize: '15px' }}>
+                    {whiteText}
+                  </p>
                 )}
-                <p>{whiteSubText}</p>
+                <p className={styles.whiteSubText}>{whiteSubText}</p>
                 {importantSubText && (
                   <p className={styles.importantText}>{importantSubText}</p>
                 )}
