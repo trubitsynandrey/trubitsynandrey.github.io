@@ -2,12 +2,15 @@ import React, {
   createContext,
   PropsWithChildren,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from 'react'
+import { differenceInSeconds } from 'date-fns'
 import _ from 'lodash'
 
 import { quizData } from '../data/quizData'
+import { convertSecondsToTime } from '../utils/convert'
 
 declare global {
   interface Window {
@@ -72,11 +75,26 @@ const QuizContext = createContext<InitialValues>(initial)
 
 export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const index = useRef(0)
+
   const [currentQuestion, setCurrentQuestion] = useState<Question>(quizData[0])
   const [isWrongTheme, setIsWrongTheme] = useState(false)
   const [isRightTheme, setIsRightTheme] = useState(false)
   const [isBeenRated, setIsBeenRated] = useState(false)
   const [isStartModal, setIsStartModal] = useState(true)
+
+  const [startTime, setStartTime] = useState<Date | null>(null)
+
+  const calculateTimePassedAndReset = () => {
+    const endTime = new Date()
+
+    if (startTime) {
+      const difference = differenceInSeconds(endTime, startTime)
+      const formattedTime = convertSecondsToTime(difference.toString())
+      setStartTime(null)
+      setStartTime(new Date())
+      window.ym(94197337, 'reachGoal', 'GameTime', { game_time: formattedTime })
+    }
+  }
 
   const handleNextQuestion = () => {
     index.current += 1
@@ -85,14 +103,21 @@ export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setIsWrongTheme(false)
   }
 
-  const startFromTheBeginning = () => {
+  const startFromTheBeginning = async () => {
     window.ym(94197337, 'reachGoal', 'startOver')
     index.current = 0
     setCurrentQuestion(_.cloneDeep(quizData[index.current]))
+
+    calculateTimePassedAndReset()
+
     setIsRightTheme(false)
     setIsWrongTheme(false)
     setIsStartModal(true)
   }
+
+  useEffect(() => {
+    setStartTime(new Date())
+  }, [])
 
   const values: InitialValues = {
     currentQuestion,
