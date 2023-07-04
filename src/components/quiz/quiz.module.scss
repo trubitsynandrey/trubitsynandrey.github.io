@@ -1,6 +1,6 @@
 .container {
   height: 100%;
-  padding: 60px;
+  padding: 50px;
   background-color: #00d1d2;
   flex: 1;
   display: flex;
@@ -30,7 +30,6 @@
   border: 4px solid #fffdfb;
   background: #fffdfb;
   text-align: center;
-  padding-bottom: 34px;
   margin-bottom: 24px;
   & > div {
     height: 60px;
@@ -45,11 +44,11 @@
   & > p:first-of-type {
     margin-top: 28px;
     margin-bottom: 16px;
-
   }
   & > p.captionThinText {
     color: #34303d;
     font-size: 24px;
+    margin-bottom: 20px;
   }
   & > p.notPickedFirst {
     font-size: 28px;
@@ -63,12 +62,15 @@
     font-weight: 700;
     color: rgba(52, 48, 61, 1);
     text-transform: uppercase;
+    margin-bottom: 30px;
   }
   & > p.captionBoldText {
     font-size: 36px;
     font-weight: 700;
     color: #00d1d2;
     text-transform: uppercase;
+    margin-top: 20px;
+    margin-bottom: 4px;
   }
 }
 
