@@ -32,6 +32,12 @@ export type RightAnswer = {
   importantSubText?: string
   unimportantSubText?: string[]
 }
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ym: any
+  }
+}
 
 interface InitialValues {
   currentQuestion: Question
@@ -79,6 +85,7 @@ export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }
 
   const startFromTheBeginning = () => {
+    window.ym(94197337, 'reachGoal', 'startOver')
     index.current = 0
     setCurrentQuestion(_.cloneDeep(quizData[index.current]))
     setIsRightTheme(false)
