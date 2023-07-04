@@ -9,6 +9,13 @@ import _ from 'lodash'
 
 import { quizData } from '../data/quizData'
 
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ym: any
+  }
+}
+
 interface Answer {
   id: string
   icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
@@ -31,12 +38,6 @@ export type RightAnswer = {
   whiteSubText?: string
   importantSubText?: string
   unimportantSubText?: string[]
-}
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ym: any
-  }
 }
 
 interface InitialValues {
