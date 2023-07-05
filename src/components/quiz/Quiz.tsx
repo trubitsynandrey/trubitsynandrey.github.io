@@ -1,4 +1,4 @@
-import { createElement, useRef, useState } from 'react'
+import { createElement, useCallback, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import imgUrl from '../../assets/adult.png'
@@ -6,7 +6,7 @@ import imgCheaper from '../../assets/cheaper.png'
 import imgCoffe from '../../assets/coffe.png'
 import imgPrice from '../../assets/price.png'
 import imgRent from '../../assets/rent.png'
-import { useQuizContext } from '../../containers/QuizProvider'
+import { Answer, useQuizContext } from '../../containers/QuizProvider'
 import { quizData } from '../../data/quizData'
 import AnswerPickCard from '../../ui/AnswerPickCard/AnswerPickCard'
 import { Modal } from '../modal/Modal'
@@ -39,9 +39,13 @@ export const Quiz = () => {
     setIsBeenRated,
     isStartModal,
     setIsStartModal,
+    timer,
   } = useQuizContext()
 
-  const handleCloseModal = () => setIsStartModal(false)
+  const handleCloseModal = () => {
+    window.ym(94197337, 'reachGoal', 'quizStart')
+    setIsStartModal(false)
+  }
 
   const caption = useRef<HTMLDivElement | null>(null)
 
@@ -78,6 +82,24 @@ export const Quiz = () => {
   }
 
   const isWrongContentShow = isWrongTheme && !isRightTheme
+
+  const handlePressCard = useCallback(
+    (item: Answer) => {
+      window.ym(94197337, 'reachGoal', 'answers', {
+        [currentQuestion.question]: item.text,
+      })
+
+      if (currentQuestion?.isLast) {
+        window.ym(94197337, 'reachGoal', 'startOver')
+        window.ym(94197337, 'reachGoal', 'game_time_seconds', {
+          seconds: {
+            'Время игры': timer,
+          },
+        })
+      }
+    },
+    [currentQuestion.question, currentQuestion?.isLast],
+  )
 
   return (
     <>
@@ -147,6 +169,7 @@ export const Quiz = () => {
                   subWrongText={item.subWrongText}
                   wrongText={item.wrongText}
                   scrollToTop={item.isTrue ? scrollToTop : undefined}
+                  handlePress={() => handlePressCard(item)}
                 />
               ))}
             </div>

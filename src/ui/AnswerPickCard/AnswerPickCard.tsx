@@ -13,6 +13,7 @@ interface Props {
   wrongText?: string
   isWrong?: boolean
   scrollToTop?: () => void
+  handlePress?: () => void
 }
 
 const AnswerPickCard = ({
@@ -23,6 +24,7 @@ const AnswerPickCard = ({
   wrongText,
   isWrong,
   scrollToTop,
+  handlePress,
 }: Props) => {
   const paragraphs = text.split('\n')
   const [isWrongTriggered, setIsWrongTriggered] = useState(false)
@@ -32,6 +34,7 @@ const AnswerPickCard = ({
     <button
       onClick={() => {
         if (isWrongTheme) return
+        handlePress?.()
 
         if (isWrong) {
           setIsWrongTriggered(true)

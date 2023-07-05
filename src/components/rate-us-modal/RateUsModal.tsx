@@ -62,7 +62,7 @@ const RateUsModal = ({ handleCloseModal, isModal }: Props) => {
                     onClick={() => {
                       setFirstFilledIndex(idx)
                       window.ym(94197337, 'reachGoal', 'clickStarUsefull', {
-                        rate: idx + 1,
+                        'Информация в игре была для Вас полезна?': idx + 1,
                       })
                     }}
                     key={idx}
@@ -89,7 +89,10 @@ const RateUsModal = ({ handleCloseModal, isModal }: Props) => {
                         94197337,
                         'reachGoal',
                         'clickStarPricePerception',
-                        { rate: idx + 1 },
+                        {
+                          'Изменилось ли Ваше восприятие цены на устройство и стики?':
+                            idx + 1,
+                        },
                       )
                     }}
                     key={idx}

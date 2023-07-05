@@ -6,11 +6,9 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { differenceInSeconds } from 'date-fns'
 import _ from 'lodash'
 
 import { quizData } from '../data/quizData'
-import { convertSecondsToTime } from '../utils/convert'
 
 declare global {
   interface Window {
@@ -19,7 +17,7 @@ declare global {
   }
 }
 
-interface Answer {
+export interface Answer {
   id: string
   icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
   text: string
@@ -33,6 +31,7 @@ interface Question {
   question: string
   rightAnswer?: RightAnswer
   answers: Answer[]
+  isLast?: boolean
 }
 
 export type RightAnswer = {
@@ -55,6 +54,7 @@ interface InitialValues {
   setIsBeenRated: React.Dispatch<React.SetStateAction<boolean>>
   isStartModal: boolean
   setIsStartModal: React.Dispatch<React.SetStateAction<boolean>>
+  timer: number
 }
 
 const initial: InitialValues = {
@@ -69,13 +69,15 @@ const initial: InitialValues = {
   setIsBeenRated: () => undefined,
   isStartModal: true,
   setIsStartModal: () => undefined,
+  timer: 0,
 }
 
 const QuizContext = createContext<InitialValues>(initial)
 
 export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const index = useRef(0)
-
+  const intervalId = useRef<number | undefined>(undefined)
+  const seconds = useRef(0)
   const [currentQuestion, setCurrentQuestion] = useState<Question>(quizData[0])
   const [isWrongTheme, setIsWrongTheme] = useState(false)
   const [isRightTheme, setIsRightTheme] = useState(false)
@@ -85,14 +87,9 @@ export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [startTime, setStartTime] = useState<Date | null>(null)
 
   const calculateTimePassedAndReset = () => {
-    const endTime = new Date()
-
     if (startTime) {
-      const difference = differenceInSeconds(endTime, startTime)
-      const formattedTime = convertSecondsToTime(difference.toString())
       setStartTime(null)
       setStartTime(new Date())
-      window.ym(94197337, 'reachGoal', 'GameTime', { game_time: formattedTime })
     }
   }
 
@@ -104,7 +101,6 @@ export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }
 
   const startFromTheBeginning = async () => {
-    window.ym(94197337, 'reachGoal', 'startOver')
     index.current = 0
     setCurrentQuestion(_.cloneDeep(quizData[index.current]))
 
@@ -113,11 +109,25 @@ export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setIsRightTheme(false)
     setIsWrongTheme(false)
     setIsStartModal(true)
+
+    if (intervalId.current !== undefined) {
+      clearInterval(intervalId.current)
+      seconds.current = 0
+    }
   }
 
   useEffect(() => {
     setStartTime(new Date())
   }, [])
+
+  useEffect(() => {
+    if (!isStartModal) {
+      const interval = setInterval(() => {
+        seconds.current += 1
+      }, 1000)
+      intervalId.current = interval
+    }
+  }, [isStartModal])
 
   const values: InitialValues = {
     currentQuestion,
@@ -131,6 +141,7 @@ export const QuizProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setIsBeenRated,
     isStartModal,
     setIsStartModal,
+    timer: seconds.current,
   }
 
   return <QuizContext.Provider value={values}>{children}</QuizContext.Provider>

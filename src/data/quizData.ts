@@ -140,5 +140,6 @@ export const quizData = [
         wrongText: 'Аренда устройства IQOS 3 DUOS на 7 дней стоит 10 рублей',
       },
     ],
+    isLast: true,
   },
 ]
