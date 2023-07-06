@@ -132,9 +132,11 @@ const RightContent = ({
           )}
         </div>
       </div>
-      <button className={styles.nextButton} onClick={buttonOnClick}>
-        {buttonText}
-      </button>
+      <div className={styles.nextButton_container}>
+        <button className={styles.nextButton} onClick={buttonOnClick}>
+          {buttonText}
+        </button>
+      </div>
       <RateUsModal handleCloseModal={handleCloseModal} isModal={isRateModal} />
     </>
   )

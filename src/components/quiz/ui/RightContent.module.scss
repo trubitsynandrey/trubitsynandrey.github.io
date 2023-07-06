@@ -1,3 +1,5 @@
+@import "../../../mixins.scss";
+
 .imgWrapper {
   width: 100%;
   position: relative;
@@ -41,6 +43,19 @@
   padding: 20px 24px;
   color: #fffdfb;
   margin-top: 16px;
+  @include tablet() {
+    margin-top: 12px;
+  }
+}
+
+.nextButton_container {
+  @include tablet() {
+    background: #00d1d2;
+    position: sticky;
+    padding-bottom: 12px;
+    bottom: 0px;
+    width: 100%;
+  }
 }
 
 .container {
@@ -76,6 +91,10 @@
     font-size: 20px;
     letter-spacing: 1.8px;
     margin-bottom: 24px;
+    @include tablet() {
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
   }
 
   & > p:nth-child(2) {
@@ -83,6 +102,9 @@
     text-align: center;
     font-size: 24px;
     letter-spacing: 2.16px;
+    @include tablet() {
+      font-size: 16px;
+    }
   }
 }
 

@@ -1,8 +1,12 @@
 @import 'scss-reset/reset';
-
+@import "./mixins.scss";
 body {
   display: flex;
   flex-direction: column;
+  @include tablet() {
+    min-height: auto;
+    height: -webkit-fill-available;
+  }
 }
 
 img {

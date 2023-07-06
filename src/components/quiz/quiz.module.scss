@@ -1,3 +1,5 @@
+@import "../../mixins.scss";
+
 .container {
   height: 100%;
   padding: 50px;
@@ -17,12 +19,20 @@
     flex-direction: column;
     flex: 1;
   }
+
+  @include tablet() {
+    padding: 18px;
+  }
 }
 
 .answersWrapper {
   display: flex;
   flex-direction: column;
   gap: 40px;
+
+  @include tablet() {
+    gap: 20px;
+  }
 }
 
 .sliderCaption {
@@ -40,7 +50,15 @@
     justify-content: flex-start;
     gap: 16px;
     padding-left: 24px;
+    @include tablet() {
+      height: 40px;
+    }
   }
+
+  @include tablet() {
+    margin-bottom: 16px;
+  }
+  
   & > p:first-of-type {
     margin-top: 28px;
     margin-bottom: 16px;
@@ -71,6 +89,10 @@
     text-transform: uppercase;
     margin-top: 20px;
     margin-bottom: 4px;
+    @include tablet() {
+      font-size: 28px;
+      margin-top: 16px;
+    }
   }
 }
 
@@ -83,6 +105,15 @@
     width: 24px;
     height: 24px;
     background: #fffdfb;
+  }
+
+  @include tablet() {
+    width: 12px;
+    height: 12px;
+    &__active {
+      width: 16px;
+      height: 16px;
+    }
   }
 }
 
@@ -112,6 +143,9 @@
     color: rgba(184, 183, 187, 1);
     text-transform: uppercase;
   }
+  @include tablet() {
+    margin-top: 16px;
+  }
 }
 
 .lookRightAnswer {
@@ -120,6 +154,10 @@
   text-align: center;
   font-size: 32px;
   width: 100%;
+
+  @include tablet() {
+    margin-top: 16px;
+  }
 }
 
 .fadeIn {
