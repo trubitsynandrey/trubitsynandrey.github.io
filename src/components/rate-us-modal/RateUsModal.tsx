@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 
 import { useQuizContext } from '../../containers/QuizProvider'
 import { RateUsIcon } from '../../ui/icons/rate-us-icon'
 import { Star } from '../../ui/icons/star'
+import { sendGoal } from '../../utils/send-goal'
 import styles from './RateUsModal.module.scss'
 
 type Props = {
@@ -31,6 +32,26 @@ const RateUsModal = ({ handleCloseModal, isModal }: Props) => {
     setIsBeenRated(true)
     handleCloseModal()
   }, [firstFilledIndex, secondFilledIndex])
+
+  const handleFirst = useCallback((index: number) => {
+    setFirstFilledIndex(index)
+    sendGoal('clickStarUsefull', {
+      'Информация в игре была для Вас полезна?': index + 1,
+    })
+    sendGoal('clickStarUsefull', {
+      'Оценка информации': `Оценка ${index + 1}`,
+    })
+  }, [])
+
+  const handleSecond = useCallback((index: number) => {
+    setSecondFilledIndex(index)
+    sendGoal('clickStarPricePerception', {
+      'Изменилось ли Ваше восприятие цены на устройство и стики?': index + 1,
+    })
+    sendGoal('clickStarPricePerception', {
+      'Оценка восприятия': { Оценка: `Оценка ${index + 1}` },
+    })
+  }, [])
 
   return (
     <>
@@ -60,10 +81,7 @@ const RateUsModal = ({ handleCloseModal, isModal }: Props) => {
                 return (
                   <button
                     onClick={() => {
-                      setFirstFilledIndex(idx)
-                      window.ym(94197337, 'reachGoal', 'clickStarUsefull', {
-                        'Информация в игре была для Вас полезна?': idx + 1,
-                      })
+                      handleFirst(idx)
                     }}
                     key={idx}
                     className={classNames(shouldFill && styles.filled)}
@@ -84,16 +102,7 @@ const RateUsModal = ({ handleCloseModal, isModal }: Props) => {
                 return (
                   <button
                     onClick={() => {
-                      setSecondFilledIndex(idx)
-                      window.ym(
-                        94197337,
-                        'reachGoal',
-                        'clickStarPricePerception',
-                        {
-                          'Изменилось ли Ваше восприятие цены на устройство и стики?':
-                            idx + 1,
-                        },
-                      )
+                      handleSecond(idx)
                     }}
                     key={idx}
                     className={classNames(shouldFill && styles.filled)}

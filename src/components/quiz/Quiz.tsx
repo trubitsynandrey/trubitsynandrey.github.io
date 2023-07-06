@@ -9,6 +9,7 @@ import imgRent from '../../assets/rent.png'
 import { Answer, useQuizContext } from '../../containers/QuizProvider'
 import { quizData } from '../../data/quizData'
 import AnswerPickCard from '../../ui/AnswerPickCard/AnswerPickCard'
+import { sendGoal } from '../../utils/send-goal'
 import { Modal } from '../modal/Modal'
 import styles from './quiz.module.scss'
 import RightContent from './ui/RightContent'
@@ -43,7 +44,7 @@ export const Quiz = () => {
   } = useQuizContext()
 
   const handleCloseModal = () => {
-    window.ym(94197337, 'reachGoal', 'quizStart')
+    sendGoal('quizStart')
     setIsStartModal(false)
   }
 
@@ -85,16 +86,14 @@ export const Quiz = () => {
 
   const handlePressCard = useCallback(
     (item: Answer) => {
-      window.ym(94197337, 'reachGoal', 'answers', {
+      sendGoal('answers', {
         [currentQuestion.question]: item.text,
       })
 
       if (currentQuestion?.isLast) {
-        window.ym(94197337, 'reachGoal', 'startOver')
-        window.ym(94197337, 'reachGoal', 'game_time_seconds', {
-          seconds: {
-            'Время игры': timer,
-          },
+        sendGoal('startOver')
+        sendGoal('game_time_seconds', {
+          'Время игры': timer,
         })
       }
     },
